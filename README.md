@@ -19,7 +19,7 @@
 
 4. Processes<br/>
    4.1 Train/Visualization<br/>
-       - Trainging -> train.py
+       - Trainging -> train.py<br/>
        Parameters in train.py:<br/>
         - batch_size  : batch size<br/>
         - nb_epoch    : number of epochs<br/>
