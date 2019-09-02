@@ -18,20 +18,21 @@
  - https://github.com/robisz1911/LUCID_RESULTS
 
 4. Processes<br/>
-   4.1 Train/Visualization<br/>
+      Train/Visualization<br/>
        - Trainging -> train.py<br/>
-       Parameters in train.py:<br/>
+      Parameters in train.py:<br/>
         - batch_size  : batch size<br/>
         - nb_epoch    : number of epochs<br/>
         - do_finetune : True -> training starts from imagenet weights | False -> training starts from random initialized weights<br/>
         - cutoff      : number of the freezed layers ( for example cutoff = 5 -> the first 5 layers are not trainable )<br/>
         - dataset     : changeable inside def load_data()  ( first line in the definition )<br/>
         - topology    : the topology of the network<br/>
-       Output:<br/>
+      Output:<br/>
         - train.py generates a .pb file, which saves the network<br/>
         - "topology".pb <br/>
            
-   4.2 Train/Visualization by steps
+      Train/Visualization by steps<br/>
+      
 
 # WHAT ARE THESE SCRIPTS FOR? (vis_script.sh | train_script.sh | train_vis_script.sh)
 # to train and visualize by steps | to visualize the network every 5 epochs for example, we save the network's condition after each 5 epochs, save these conditions into .pb files, and visualize them, finally we want to see all the pictures on the same page, so with merge.py, we create one big image
