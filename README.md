@@ -23,8 +23,7 @@
        Parameters in train.py:<br/>
         - batch_size  : batch size<br/>
         - nb_epoch    : number of epochs<br/>
-        - do_finetune : True -> training starts from imagenet weights<br/>
-                       --  False -> training starts from random initialized weights<br/>
+        - do_finetune : True -> training starts from imagenet weights | False -> training starts from random initialized weights<br/>
         - cutoff      : number of the freezed layers ( for example cutoff = 5 -> the first 5 layers are not trainable )<br/>
         - dataset     : changeable inside def load_data()  ( first line in the definition )<br/>
         - topology    : the topology of the network<br/>
