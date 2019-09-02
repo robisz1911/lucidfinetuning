@@ -5,7 +5,7 @@
 3. Datasets/Results.
 4. What kind of tools available.
 
-
+##### Detailed:
 1. Highly recommend to read:
    https://distill.pub/2017/feature-visualization/
    which contains the basics of feature visualization.
