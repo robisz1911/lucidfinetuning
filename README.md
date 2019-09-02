@@ -17,7 +17,7 @@
 3. We save datasets/results in another repository since they are very big files.
  - https://github.com/robisz1911/LUCID_RESULTS
 
-4. Processes
+4. Processes<br/>
    4.1 Train/Visualization
            Trainging -> train.py
        Parameters in train.py:
