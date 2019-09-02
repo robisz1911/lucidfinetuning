@@ -19,18 +19,18 @@
 
 4. Processes<br/>
    4.1 Train/Visualization
-           Trainging -> train.py
+       - Trainging -> train.py
        Parameters in train.py:
-           batch_size  : batch size
-           nb_epoch    : number of epochs
-           do_finetune : True -> training starts from imagenet weights
-                         False -> training starts from random initialized weights
-           cutoff      : number of the freezed layers ( for example cutoff = 5 -> the first 5 layers are not trainable )
-           dataset     : changeable inside def load_data()  ( first line in the definition )
-           topology    : the topology of the network
+        - batch_size  : batch size
+        - nb_epoch    : number of epochs
+        - do_finetune : True -> training starts from imagenet weights
+                       --  False -> training starts from random initialized weights
+        - cutoff      : number of the freezed layers ( for example cutoff = 5 -> the first 5 layers are not trainable )
+        - dataset     : changeable inside def load_data()  ( first line in the definition )
+        - topology    : the topology of the network
        Output:
-           train.py generates a .pb file, which saves the network
-           "topology".pb 
+        - train.py generates a .pb file, which saves the network
+        - "topology".pb 
            
    4.2 Train/Visualization by steps
 
