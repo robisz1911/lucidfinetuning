@@ -8,15 +8,14 @@
 ##### Detailed:
 1. Highly recommend to read:
  - https://distill.pub/2017/feature-visualization/
-   which contains the basics of feature visualization.
- - More details available from the original repository:
-   https://github.com/tensorflow/lucid#recomended-reading
-   
+   which contains the basics of feature visualization
+ - https://github.com/tensorflow/lucid#recomended-reading
+   More details at the original repository
 2. We study the visualization before and after finetuning.
-   What happens in the visualization, when we finetune a neural network with imagenet weights, for a new image classification problem.
+ - What happens in the visualization, when we finetune a neural network with imagenet weights, for a new image classification problem.
    
 3. We save datasets/results in another repository since they are very big files.
-   https://github.com/robisz1911/LUCID_RESULTS
+ - https://github.com/robisz1911/LUCID_RESULTS
 
 4.
    4.1 Train/Visualization
