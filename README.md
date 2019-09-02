@@ -3,7 +3,7 @@
 1. What is LUCID visualization?
 2. What is our research project about?
 3. Datasets/Results.
-4. What kind of tools available.
+4. What kind of processes available.
 
 ##### Detailed:
 1. Highly recommend to read:
@@ -17,7 +17,7 @@
 3. We save datasets/results in another repository since they are very big files.
  - https://github.com/robisz1911/LUCID_RESULTS
 
-4.
+4. Processes
    4.1 Train/Visualization
            Trainging -> train.py
        Parameters in train.py:
