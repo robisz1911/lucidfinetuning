@@ -7,7 +7,7 @@
 
 ##### Detailed:
 1. Highly recommend to read:
-   https://distill.pub/2017/feature-visualization/
+ - https://distill.pub/2017/feature-visualization/
    which contains the basics of feature visualization.
    More details available from the original repository:
    https://github.com/tensorflow/lucid#recomended-reading
