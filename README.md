@@ -1,4 +1,4 @@
-LUCID visualization before and after finetuning.
+## LUCID visualization before and after finetuning.
 
 1. What is LUCID visualization?
 2. What is our research project about?
