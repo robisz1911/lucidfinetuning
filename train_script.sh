@@ -1,16 +1,14 @@
 #!/bin/bash
 
-######  NOTE : before running the script, delete training_x folder ###################################################
-
-mkdir training_x
-
-
+######  NOTE : before running the script, delete training_x folder or rename it to a non existing folder#############################
 
 #sed -i 's/nb_epoch = .*/nb_epoch = 1/' train.py    # SET : visualize after every n'th epochs
 
-rows=100
+mkdir training_x
 
-for (( i = 1; i <= $rows; i++ ))                                   # SET : {1..N}, means: train for (np_epochs) epochs and repeate N times
+rows=100 # train 100*nb_epoch
+
+for (( i = 1; i <= $rows; i++ ))
 do
     
     if [ $i == 1 ]; then                            # both variables set to False, so we do not finetune or load weights from previous training
