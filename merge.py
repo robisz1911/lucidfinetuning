@@ -1,7 +1,7 @@
 # iterate over png files in the current folder, and merge them into one png (merged.png) 
 # PARAMETER :
 #                       column    :    SAME as the COLUMN in vis.py ( the number of neurons visualized )
-# NOTE : if u change the size of the generated images(in vis.py), change height and width here too!
+# NOTE : if you change the size of the generated images(in vis.py), change height and width here too!
 from PIL import Image
 import os
 def merge():
