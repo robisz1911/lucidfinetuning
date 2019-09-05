@@ -17,18 +17,21 @@
 
 ######  NOTE : before running the script, delete training_x, pictures_x folders ###################################################
 
+#sed -i 's/nb_epoch = .*/nb_epoch = 1/' train.py   # SET : visualize after every n'th epochs
+#sed -i 's/COLUMNS = .*/COLUMNS = 5/' vis.py       # SET : number of neurons visualized       |THESE TWO-      |
+#sed -i 's/columns = .*/columns = 5/' merge.py     # SET : number of neurons visualized       |MUST BE THE SAME|
 
-mkdir training_x
-mkdir pictures_x
-cp merge.py pictures_x/merge.py
+folder_for_pictures = pictures_x
+folder_for_trainings = training_x
+
+mkdir $folder_for_pictures
+mkdir $folder_for_trainings
+cp merge.py $folder_for_pictures/merge.py
 
 rows=50
 layer=Mixed_4f_Branch_3_b_1x1_act/Relu
 
 
-#sed -i 's/nb_epoch = .*/nb_epoch = 1/' train.py   # SET : visualize after every n'th epochs
-#sed -i 's/COLUMNS = .*/COLUMNS = 5/' vis.py       # SET : number of neurons visualized       |THESE TWO-      |
-#sed -i 's/columns = .*/columns = 5/' merge.py     # SET : number of neurons visualized       |MUST BE THE SAME|
 
 for (( i = 1; i <= $rows; i++ ))                                    # SET : train for (np_epochs) epochs then visualize this many times
 do
@@ -49,13 +52,13 @@ do
     python train.py
     cat googlenet-node-names | grep $layer | python vis.py googlenetLucid.pb - $i
     cp googlenetLucid.pb $i.pb
-    mv $i.pb training_x
-    mv $i.png pictures_x
+    mv $i.pb $folder_for_trainings
+    mv $i.png $folder_for_pictures
 
 done
                                                     # finally, we cd into pictures_x folder and run merge.py ( this should be executed next to the images )
 
-cd pictures_x
+cd $folder_for_pictures
 python merge.py
 
 
