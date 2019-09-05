@@ -23,12 +23,12 @@
 
 folder_for_pictures = pictures_x
 folder_for_trainings = training_x
+rows=50
 
 mkdir $folder_for_pictures
 mkdir $folder_for_trainings
 cp merge.py $folder_for_pictures/merge.py
 
-rows=50
 layer=Mixed_4f_Branch_3_b_1x1_act/Relu
 
 
