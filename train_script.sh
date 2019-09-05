@@ -6,7 +6,7 @@
 foldername = training_x
 mkdir $foldername
 
-rows=100 # train 100*nb_epoch
+rows=100 # train (rows-1)*nb_epoch becouse 1.pb will belong to the state before training(when finetuning, 1.pb whave the original imagenet weights)
 
 for (( i = 1; i <= $rows; i++ ))
 do
