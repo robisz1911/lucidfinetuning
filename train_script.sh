@@ -3,8 +3,8 @@
 ######  NOTE : before running the script, delete training_x folder or rename it to a non existing folder#############################
 
 #sed -i 's/nb_epoch = .*/nb_epoch = 1/' train.py    # SET : visualize after every n'th epochs
-
-mkdir training_x
+foldername = training_x
+mkdir $foldername
 
 rows=100 # train 100*nb_epoch
 
@@ -26,6 +26,6 @@ do
                                                     # each iteration we train, then save and copy frozen model file to training_x
     python train.py
     cp googlenetLucid.pb $i.pb
-    mv $i.pb training_x
+    mv $i.pb $foldername
 
 done
