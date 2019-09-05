@@ -9,11 +9,12 @@
 #sed -i 's/columns = .*/columns = 15/' merge.py     # SET : number of neurons visualized       |MUST BE THE SAME|
 rows=100
 foldername = picture_x
+layer=Mixed_4c_Branch_3_b_1x1_act/Relu
 mkdir $foldername
 cp merge.py $foldername
 
                                              # the final image will have this many rows
-layer=Mixed_4c_Branch_3_b_1x1_act/Relu
+
 
 
 # for i in {1..46..5}
