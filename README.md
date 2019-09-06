@@ -54,5 +54,7 @@ It’ll do the training and visualizing in each iteration (except for the first 
 Set folder_for_pictures, folder_for_trainings, rows and layer, just as mentioned above.
 Run train_vis_script.sh with the command ./train_vis_script.sh.
 
-NOTE : error:  /bin/bash^M: bad interpreter: No such file or directory    (notepad++ saved the files with dos endings instead of unix)<br/>
-solution:  vim valami,sh  ->and run    :set fileformat=unix   save it again(:wq)<br/>
+##### NOTE: #####
+if you face error:  /bin/bash^M: bad interpreter: No such file or directory<br/>
+(notepad++ saved the files with dos endings instead of unix)<br/>
+solution:  vim yourscript.sh -> run: set fileformat=unix -> save it with :wq
