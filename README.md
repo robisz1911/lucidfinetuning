@@ -4,6 +4,7 @@ First of all clone our github repository. (https://github.com/robisz1911/lucidfi
 • Train and save the network’s states after each x epochs<br/>
 • Visualize only one .pb file(one state of the network)<br/>
 • Visualize from many .pb files<br/>
+• Train and visualize
 ## 3.1. Train
 There are different ways to train with the existing tools:<br/>
 
