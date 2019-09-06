@@ -1,8 +1,12 @@
 # 3. How to train and/or visualize with the existing tools.
-First of all clone our github repository. (https://github.com/robisz1911/lucidfinetuning)
-
+First of all clone our github repository. (https://github.com/robisz1911/lucidfinetuning)<br/>
+• Train and save only the final state of the network<br/>
+• Train and save the network’s states after each x epochs<br/>
+• Visualize only one .pb file(one state of the network)<br/>
+• Visualize from many .pb files<br/>
 ## 3.1. Train
-There are different ways to train with the existing tools.
+There are different ways to train with the existing tools:<br/>
+
 ##### 3.1.1. Train and save only the final state of the network
 The first one is to train the network, and save only its’ final state into a .pb file, the .pb file is the one, we can use to generate visualization from.
 We have another github repository ( https://github.com/robisz1911/datasets ) from where you can download flowers or animals dataset, but our main focus is on flowers17 right now.
