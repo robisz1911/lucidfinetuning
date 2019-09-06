@@ -1,12 +1,21 @@
 #!/bin/bash
 
-######  NOTE : before running the script, delete training_x folder or rename it to a non existing folder#############################
+###############  NOTE : before running rename foldername to a non existing folder#############################
 
-#sed -i 's/nb_epoch = .*/nb_epoch = 1/' train.py    # SET : visualize after every n'th epochs
+#SET HYPERPARAMETERS 
+
+set_nb_epoch_in_train = 1
+set_batch_size_in_train = 32
+
+# with the command sed, it's possible to change parameters in different files from anywhere
+
+sed -i 's/nb_epoch = .*/nb_epoch = $set_nb_epoch_in_train/' train.py
+sed -i 's/batch_size = .*/batch_size = $set_batch_size_in_train/' train.py
+
 foldername = training_x
 mkdir $foldername
 
-rows=100 # train (rows-1)*nb_epoch becouse 1.pb will belong to the state before training(when finetuning, 1.pb whave the original imagenet weights)
+rows=100 # train [(rows-1)*nb_epoch] epochs because 1.pb will belong to the state before training(when finetuning, 1.pb have the original imagenet weights)
 
 for (( i = 1; i <= $rows; i++ ))
 do
