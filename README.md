@@ -67,17 +67,17 @@ We have another github repository ( https://github.com/robisz1911/datasets ) fro
 Download it to your renyi computer, into the same folder as lucid files.
 Run vim train.py to edit the parameters of the training.
 Parameters what are interesting for us:
-•	nb_epochs 	number of epochs
-•	batch_size	batch size
-•	cutoff	the numbers of the first x layers what are not trainable
-can be found in def finetune at line109(L109)
-•	compile parameters	optimizer, learning rate(L117)
-•	dataset	default setup is flowers17
-can be found in the first line of def load_data(L126)
-•	topology	the network’s topology
-options are googlenet, inceptionv3 and vgg16
-•	do_finetune	if True training starts from imagenet weights
-	if False no training at all
+•	nb_epochs ->number of epochs<br/>
+•	batch_size	->batch size<br/>
+•	cutoff	the numbers of the first x layers what are not trainable<br/>
+can be found in def finetune at line109(L109)<br/>
+•	compile parameters	->optimizer, learning rate(L117)<br/>
+•	dataset	default setup is flowers17<br/>
+can be found in the first line of def load_data(L126)<br/>
+•	topology	->the network’s topology<br/>
+options are googlenet, inceptionv3 and vgg16<br/>
+•	do_finetune	->if True training starts from imagenet weights<br/>
+	if False no training at all<br/>
 Run train.py with the command python train.py which will train the network and save its’ final state into a .pb file.
 
 ##### 3.1.2. Train and save the network’s states after each x epochs
