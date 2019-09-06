@@ -10,7 +10,7 @@ import lucid.optvis.param as param
 MODEL_PATH, LAYER, OUTPUT_PREFIX = sys.argv[1:]
 # 'inceptionLucid.pb', 'average_pooling2d_9/AvgPool'
 
-COLUMNS = 10
+COLUMNS = 5
 
 class FrozenNetwork(Model):
     model_path = MODEL_PATH
@@ -22,7 +22,7 @@ network = FrozenNetwork()
 network.load_graphdef()
 
 if LAYER == "-":
-    height, width = 128, 128
+    height, width = 144, 144
     images = []
     layers = []
     for l in sys.stdin:
