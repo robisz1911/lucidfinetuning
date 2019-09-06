@@ -49,7 +49,7 @@ It will run vis.py on every .pb files in the folder, and it generates y .png fil
 visualizations of the selected layer in each state.
 The script will then run merge.py, what concatenate these pictures into one big image, which first row belongs to the 1. state of the network(before training state), and the last row belongs to the y. state. Read merge.py for more details.
 ## 3.3. Train and visualize
-This script is the combination of the ones above. (train_script.sh and vis_script.sh)
+This script(train:vis:script.sh) is the combination of the ones above. (train_script.sh and vis_script.sh)
 It’ll do the training and visualizing in each iteration (except for the first one, where only the visualization), then concatenate the pictures with merge.py.
 Set folder_for_pictures, folder_for_trainings, rows and layer, just as mentioned above.
 Run train_vis_script.sh with the command ./train_vis_script.sh.
