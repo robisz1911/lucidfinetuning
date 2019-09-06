@@ -1,16 +1,16 @@
 #!/bin/bash
 
+########## THIS SCRIPT WILL TRAIN THE NETWORK AND SAVE ITS' STATE IN EVERY ITERATION TO A .PB FILE ###########
+
 ###############  NOTE : before running rename foldername to a non existing folder#############################
 
-#SET HYPERPARAMETERS 
-
-set_nb_epoch_in_train = 1
-set_batch_size_in_train = 32
+#SET NUMBER OF EPOCHS(nb_epoch) and BATCH SIZE(batch_size) in train.py by setting the two variables below(uncomment them, and the two sed lines)
+#set_nb_epoch_in_train = 1
+#set_batch_size_in_train = 32
 
 # with the command sed, it's possible to change parameters in different files from anywhere
-
-sed -i 's/nb_epoch = .*/nb_epoch = $set_nb_epoch_in_train/' train.py
-sed -i 's/batch_size = .*/batch_size = $set_batch_size_in_train/' train.py
+#sed -i 's/nb_epoch = .*/nb_epoch = $set_nb_epoch_in_train/' train.py
+#sed -i 's/batch_size = .*/batch_size = $set_batch_size_in_train/' train.py
 
 foldername = training_x
 mkdir $foldername
