@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# VISUALIZE 'layer' from .pb files in 'foldername' and concatenate these pictures into one
+# VISUALIZE 'layer' from .pb files in 'foldername' and concatenate these pictures into one with merge.py
 
 ######  NOTE : before running the script, rename foldername to a non existing foldername ######
 
