@@ -58,6 +58,13 @@ This script(train:vis:script.sh) is the combination of the ones above. (train_sc
 It’ll do the training and visualizing in each iteration (except for the first one, where only the visualization), then concatenate the pictures with merge.py.
 Set folder_for_pictures, folder_for_trainings, rows and layer, just as mentioned above.
 Run train_vis_script.sh with the command ./train_vis_script.sh.
+More detailed:<br/>
+1.pb is the default – imagenet<br/>
+1.png is the choosen layer visualized with imagenet weights<br/>
+2.pb is the network’s state after [nb_epoch] epochs<br/>
+2.png is the choosen layer visualized after [nb_epoch] epochs<br/>
+x.pb is the network’s state after [nb_epoch*(n-1)] epochs<br/>
+x.png is the choosen layer visualized after [nb_epoch*(n-1)] epochs<br/>
 
 ##### NOTE: #####
 if you face error:  /bin/bash^M: bad interpreter: No such file or directory<br/>
