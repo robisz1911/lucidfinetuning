@@ -12,7 +12,7 @@
 #sed -i 's/nb_epoch = .*/nb_epoch = $set_nb_epoch_in_train/' train.py
 #sed -i 's/batch_size = .*/batch_size = $set_batch_size_in_train/' train.py
 
-foldername = training_x
+foldername=training_x
 mkdir $foldername
 
 rows=100 # train [(rows-1)*nb_epoch] epochs because 1.pb will belong to the state before training(when finetuning, 1.pb have the original imagenet weights)
