@@ -20,8 +20,8 @@
 #sed -i 's/COLUMNS = .*/COLUMNS = 5/' vis.py       # SET : number of neurons visualized       |THESE TWO-      |
 #sed -i 's/columns = .*/columns = 5/' merge.py     # SET : number of neurons visualized       |MUST BE THE SAME|
 
-folder_for_pictures = pictures_x
-folder_for_trainings = training_x
+folder_for_pictures=pictures_x
+folder_for_trainings=training_x
 rows=50
 
 mkdir $folder_for_pictures
