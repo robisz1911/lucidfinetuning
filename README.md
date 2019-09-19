@@ -41,7 +41,7 @@ The visualizations created by vis.py which input is a .pb file.
 In vis.py we can change COLUMNS what is the number of neurons being visualized.
 ##### 3.2.1. Visualize only one .pb file(one state of the network).
 Run the command:
-cat googlenet-node-names | grep „expression” | python vis.py sample.pb – sample_visualization
+```cat googlenet-node-names | grep „expression” | python vis.py sample.pb – sample_visualization```
 Googlenet-node-names contains the layer names of the googlenet architecture, and grep command select all of these layers which include „expression”.
 Then the visualization is generated for the selected layers. (the first COLUMNS neurons are visualized in each layers)
 The output is the sample_visualization.png.
