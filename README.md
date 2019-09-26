@@ -1,74 +1,90 @@
-# 3. How to train and/or visualize with the existing tools.
-First of all clone our github repository. (https://github.com/robisz1911/lucidfinetuning)<br/>
-• Train and save only the final state of the network<br/>
-• Train and save the network’s states after each x epochs<br/>
-• Visualize only one .pb file(one state of the network)<br/>
-• Visualize from many .pb files<br/>
-• Train and visualize
-## 3.1. Train
-There are different ways to train with the existing tools:<br/>
+# Creating visualizations before and after transfer learning using the Lucid library
 
-##### 3.1.1. Train and save only the final state of the network
-The first one is to train the network, and save only its’ final state into a .pb file, the .pb file is the one, we can use to generate visualization from.
-We have another github repository ( https://github.com/robisz1911/datasets ) from where you can download flowers or animals dataset, but our main focus is on flowers17 right now.
-Download it to your renyi computer, into the same folder as lucid files.
-Run vim train.py to edit the parameters of the training.
-Parameters what are interesting for us:
-•	nb_epochs ->number of epochs<br/>
-•	batch_size	->batch size<br/>
-•	cutoff	->the numbers of the first x layers what are not trainable<br/>
-can be found in def finetune at line109(L109)<br/>
-•	compile parameters	->optimizer, learning rate(L117)<br/>
-•	dataset	->default setup is flowers17<br/>
-can be found in the first line of def load_data(L126)<br/>
-•	topology	->the network’s topology<br/>
-options are googlenet, inceptionv3 and vgg16<br/>
-•	do_finetune	->if True training starts from imagenet weights / if False no training at all<br/>
-Run train.py with the command python train.py which will train the network and save its’ final state into a .pb file.
+The [lucid library](https://github.com/tensorflow/lucid) and the [Feature Visualization article](https://distill.pub/2017/feature-visualization/)
 
-##### 3.1.2. Train and save the network’s states after each x epochs
-This tool can be found in train_script.sh. Bash script format is .sh, and the first line should be #!/bin/bash as you can see by running vim train_script.sh.<br/>
-You have to change the foldername, because a new folder should be generated where the .pb files will be saved. (name it to a non-existing foldername)<br/>
-Another parameter in the script is rows, which means the overall epochs equals to (rows-1)*nb_epoch. Rows are the number of iterations of the training. Each iteration we train the network for nb_epoch.(except for the first one, where we save the network before training)<br/>
-For more details check the comments in the script.<br/>
-Before run a bash script, you have to give execute permission to it with the command chmod +x /path/to/yourscript.sh or chmod +x ./yourscript.sh (if you are at its’ folder).<br/>
-Run script with the command /path/to/yourscript.sh or ./yourscript.sh.<br/>
-This will generate the .pb files into the created folder.<br/>
-(1.pb belongs to the network before training, x.pb is the state after [(x-1)*nb_epoch] epochs)<br/>
+## Single visualizations
 
-## 3.2. Visualize
-The visualizations created by vis.py which input is a .pb file.
-In vis.py we can change COLUMNS what is the number of neurons being visualized.
-##### 3.2.1. Visualize only one .pb file(one state of the network).
-Run the command:
+We can visualize neurons of the network [before](https://github.com/robisz1911/LUCID_RESULTS/blob/master/single_results/googlenet_default.png) and [after](https://github.com/robisz1911/LUCID_RESULTS/blob/master/single_results/flowers/flowers_20cutoff.png) transfer learning.
+
+### Training
+The script `train.py` saves the network's final state to a .pb file. It is a frozen model file created by the script, that contains all the relevant information (model.pb and checkpoint file) of the network. The Lucid library requires frozen model files of this kind in order to create visualizations.
+We have [another repository](https://github.com/robisz1911/LUCID_RESULTS) from where you can download the Flowers17 and animals datasets and take a look at some of the results.
+
+#### Important parameters of `train.py`:
+ - *nb_epochs* - number of epochs (line 32)
+ - *batch_size* - batch size (line 31)
+ - *cutoff* - the numbers of the first x layers what are not trainable (line 109)
+ - *compile parameters - optimizer, learning rate* (line 117)
+ - *dataset* - default setup is flowers17. (line 126)
+ - *topology* - the network’s topology (line 161)
+                options are googlenet, inceptionv3 and vgg16
+                setting the weights: „imagenet” or „None” for random initialization
+ - *do_finetune* - whether to perform training/transfer learning (line 178)
+                   if True: performs transfer learning
+                   if False: no transfer learning, we save the network with the original weights (ImageNet or random). 
+                   For example if you want a frozen model file with the ImageNet weights, set do_finetune=False and run                   
+                   the file – it is useful for comparison
+
+Run `train.py` to perform transfer learning, and save the network's final state into a .pb file.
+
+### Visualization
+The visualizations are created by `vis.py`, which needs the name(s) of the nodes we want to visualize, a .pb file, and a string that will be the name of the saved image as inputs. Here the main parameter is *COLUMNS* is the number of neurons visualized from each layer.
+Also, this is where we can set the parameters, and objectives for the Lucid visualization.
+
+In order to visualize one certain state of the network, run the commands:
 ```
-cat googlenet-node-names | grep „expression” | python vis.py sample.pb – sample_visualization
+cat googlenet-node-names | grep „expression” | python vis.py sample.pb – grid sample_visualization
 ```
-Googlenet-node-names contains the layer names of the googlenet architecture, and grep command select all of these layers which include „expression”.
-Then the visualization is generated for the selected layers. (the first COLUMNS neurons are visualized in each layers)
-The output is the sample_visualization.png.
-##### 3.2.2. Visualize from many .pb files.
-If there was a training where the network’s states where saved in y iterations, then we have a given folder(sample_folder) with y .pb files, from 1.pb to y.pb.
-Set foldername to a new name, where the images will be saved.
-Set rows equals to the number of .pb files. Name the layer you want to visualize by setting layer.
-We can run vis_script.sh with the command ./vis_script.sh to visualize a selected layer through every state of its training.
-It will run vis.py on every .pb files in the folder, and it generates y .png files, what are the 
-visualizations of the selected layer in each state.
-The script will then run merge.py, what concatenate these pictures into one big image, which first row belongs to the 1. state of the network(before training state), and the last row belongs to the y. state. Read merge.py for more details.
-## 3.3. Train and visualize
-This script(train:vis:script.sh) is the combination of the ones above. (train_script.sh and vis_script.sh)
-It’ll do the training and visualizing in each iteration (except for the first one, where only the visualization), then concatenate the pictures with merge.py.
-Set folder_for_pictures, folder_for_trainings, rows and layer, just as mentioned above.
-Run train_vis_script.sh with the command ./train_vis_script.sh.<br/>
-More detailed:<br/>
-1.pb is the default – imagenet<br/>
-1.png is the choosen layer visualized with imagenet weights<br/>
-2.pb is the network’s state after [nb_epoch] epochs<br/>
-2.png is the choosen layer visualized after [nb_epoch] epochs<br/>
-x.pb is the network’s state after [nb_epoch*(n-1)] epochs<br/>
-x.png is the choosen layer visualized after [nb_epoch*(n-1)] epochs<br/>
+`Googlenet-node-names` contains the layer names of the googlenet architecture, and grep
+command select all of theose layers which include *„expression”*. Then the visualization of the
+first *COLUMNS* neurons of the chosen layers is generated. The output image (*sample_visualization.png*) 
+is saved to the working directory. Its rows correspond to the layers, and the columns correspond to neurons.
 
-##### NOTE: #####
-if you face error:  /bin/bash^M: bad interpreter: No such file or directory<br/>
-(notepad++ saved the files with dos endings instead of unix)<br/>
-solution:  vim yourscript.sh -> run: set fileformat=unix -> save it with :wq
+## Step by step training and visualization
+
+We can also [track the changes](https://github.com/robisz1911/LUCID_RESULTS/blob/master/steps_results/PICTURES/flowers_20cutoff_50epochs_mixed4c_png/merged.png) throughout the transfer learning process. 
+Here we can see the first five neurons of the *Mixed_4c_Branch_3_b_1x1_act/Relu* layer (columns) of GoogLeNet during the 
+first 50 epochs (rows). 
+
+### Training by steps
+This tool can be found in `train_script.sh`. Here the name of the directory - where all the .pb
+files of the current run will be saved - is a variable, which you can change at the beginning of
+the script (currently *training_x*)
+Another parameter in the script is *rows*, referring to the number of rows the final image will
+have. It also means that the overall number of epochs we run the training for equals to *(rows-
+1)nb_epoch*. In other words, rows is the number of iterations of the training. At each iteration
+we train the network for *nb_epoch* epochs.(except for the first one, where we save the
+network before training – with its original weights) For more details check the comments in
+the script.
+
+
+### Visualization from several .pb files.
+If there was a previous training where the network states were saved through y iterations, then
+we have a given folder (*sample_folder* – it is what you set in the beginning of `train_script.sh`)
+containing the .pb files, from 1.pb to y.pb.
+Set *foldername* (in `vis_script.sh`) to create a new directory where the images will be saved. Set
+*rows* equal to the number of .pb files to use all of them in the visualization. Note, that it is not
+necessary to use all the existing .pb files, you can just use the first let’s say 10 of them, by
+setting rows=10 here. It is only necessary that the rows parameter is less or equal to the
+number of .pb files in the directory. Name the layer you want to visualize by setting layer.
+
+The script works the following way: it will run `vis.py` on every .pb file in the folder, and thus
+it generates the y.png files, which are the visualizations of the selected layer at the yth step.
+The script will then run `merge.py`, which concatenates these pictures into one big image,
+where the first row belongs to the default state of the network (before training).
+
+
+### Training and visualization at once
+The script `train_vis_script.sh` is the combination of the ones above. (`train_script.sh` and
+`vis_script.sh`)
+It does the training and visualization at each iteration (except for the first one, where we wish
+to see the network’s pre-training state, meaning the script only performs visualization but not
+training), then concatenates the pictures with `merge.py`.
+ - 1.pb is the default network – imagenet (or random initialized) weights
+ - 1.png is the chosen layer visualized with these weights
+ - 2.pb is the network’s state after *nb_epoch* epochs
+ - 2.png is the choosen layer visualized after *nb_epoch* epochs
+ - n.pb is the network’s state after *(n-1)nb_epoch* epochs
+ - n.png is the choosen layer visualized after *(n-1)nb_epoch* epochs and so on
+
+Set *folder_for_pictures*, *folder_for_trainings*, *rows* and *layer*, just as mentioned above and run `train_vis_script.sh`.
