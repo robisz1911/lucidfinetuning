@@ -8,9 +8,10 @@ mv googlenet_imagenet.pb googlenet_default.pb
 
 
 layer=Mixed_4d_Concatenated/concat
+n_neurons=511
 
 # for number of neurons in layer
-for (( i=0; i<=511; i++ ))
+for (( i=0; i<=n_neurons; i++ ))
 do
     for weights in default finetuned flowers
     do
