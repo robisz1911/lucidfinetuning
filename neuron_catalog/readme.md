@@ -7,7 +7,7 @@
 ### Visualizations of single neurons 
 Used frozen model files (downloaded automatically by the script)
   - googlenet_default.pb (network with Imagenet weights)
-  - googlenet_finetuned.pb (Imagenet -> flowers transfer learning)
+  - googlenet_finetuned.pb (after Imagenet -> flowers transfer learning)
   - googlenet_flowers.pb (training on flowers)
   
   filename = {layer}\_{neuron id}\_{input frozen model file}.png
