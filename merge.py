@@ -3,7 +3,14 @@
 #                       column    :    SAME as the COLUMN in vis.py ( the number of neurons visualized )
 # NOTE : if you change the size of the generated images(in vis.py), change height and width here too!
 from PIL import Image
+import sys
 import os
+
+column_arg, = sys.argv[1:]
+print(column_arg)
+column = int(column_arg)
+
+
 def merge():
     number_of_pictures = 0
     for filename in os.listdir():
@@ -13,7 +20,10 @@ def merge():
             number_of_pictures += 1
             
     height = 128
-    column = 5 # must be the same as COLUMN in vis.py ( the number of neurons we wanna to visualize )
+    #column = 5 # must be the same as COLUMN in vis.py ( the number of neurons we wanna to visualize )
+#    column_arg = sys.argv[1:]
+#    print(column_arg)
+#    column = int(column_arg)
     width = 128*column
     merged = Image.new('RGB', (width, height*number_of_pictures))
     iterator = 0

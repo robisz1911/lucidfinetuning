@@ -7,10 +7,12 @@ import lucid.optvis.objectives as objectives
 import lucid.optvis.param as param
 
 
-MODEL_PATH, LAYER, OUTPUT_PREFIX = sys.argv[1:]
+MODEL_PATH, LAYER, OUTPUT_PREFIX, COLUMNS_arg = sys.argv[1:]
 # 'inceptionLucid.pb', 'average_pooling2d_9/AvgPool'
 
-COLUMNS = 5
+COLUMNS = int(COLUMNS_arg)
+print(COLUMNS)
+#COLUMNS = 5
 
 class FrozenNetwork(Model):
     model_path = MODEL_PATH

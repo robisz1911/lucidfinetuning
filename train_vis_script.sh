@@ -20,10 +20,12 @@
 #sed -i 's/COLUMNS = .*/COLUMNS = 5/' vis.py       # SET : number of neurons visualized       |THESE TWO-      |
 #sed -i 's/columns = .*/columns = 5/' merge.py     # SET : number of neurons visualized       |MUST BE THE SAME|
 
-folder_for_pictures=pictures_x
-folder_for_trainings=training_x
-rows=50
-
+folder_for_pictures=pictures_testing_new_scripts
+folder_for_trainings=training_testing_new_scripts
+rows=5
+batch_size=32
+nb_epoch=1
+columns=2
 mkdir $folder_for_pictures
 mkdir $folder_for_trainings
 cp merge.py $folder_for_pictures/merge.py
@@ -36,28 +38,35 @@ for (( i = 1; i <= $rows; i++ ))
 do
     
     if [ $i == 1 ]; then                            # both variables set to False, so we do not finetune or load weights from previous training 
-        sed -i 's/do_load_model = .*/do_load_model = False/' train.py
-        sed -i 's/do_finetune = .*/do_finetune = False/' train.py      
+        #sed -i 's/do_load_model = .*/do_load_model = False/' train.py
+        #sed -i 's/do_finetune = .*/do_finetune = False/' train.py      
+        python train.py $batch_size $nb_epoch 0 1 0
+        cat googlenet-node-names | grep $layer | python vis.py googlenetLucid.pb - $i $columns
+        cp googlenetLucid.pb $i.pb
+        mv $i.pb $folder_for_trainings
+        mv $i.png $folder_for_pictures
     fi
     if [ $i  == 2 ]; then                           # finetune = True, we start finetuning the model, but still not loading weights from previous training
-        sed -i 's/do_finetune = .*/do_finetune = True/' train.py
-        sed -i 's/do_load_model = .*/do_load_model = False/' train.py
+        python train.py $batch_size $nb_epoch 0 1 1
+        cat googlenet-node-names | grep $layer | python vis.py googlenetLucid.pb - $i $columns
+        cp googlenetLucid.pb $i.pb
+        mv $i.pb $folder_for_trainings
+        mv $i.png $folder_for_pictures
+
     fi
     if [ $i != 2 ] && [ $i != 1 ]; then             # finetune for nb_epochs, and load the weights from the previous iteration
-        sed -i 's/do_finetune = .*/do_finetune = True/' train.py        
-        sed -i 's/do_load_model = .*/do_load_model = True/' train.py
+        python train.py $batch_size $nb_epoch 1 1 1
+        cat googlenet-node-names | grep $layer | python vis.py googlenetLucid.pb - $i $columns
+        cp googlenetLucid.pb $i.pb
+        mv $i.pb $folder_for_trainings
+        mv $i.png $folder_for_pictures
+
     fi
-                                                    
-    python train.py
-    cat googlenet-node-names | grep $layer | python vis.py googlenetLucid.pb - $i
-    cp googlenetLucid.pb $i.pb
-    mv $i.pb $folder_for_trainings
-    mv $i.png $folder_for_pictures
 
 done
 
 cd $folder_for_pictures
-python merge.py
+python merge.py $columns
 
 
 

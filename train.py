@@ -22,15 +22,30 @@ from keras.preprocessing.image import ImageDataGenerator
 
 from tensorflow.core.protobuf import saver_pb2
 
-
+import sys
 import dataset
 import freeze_graph
 
 import os
 
-batch_size = 32
-nb_epoch = 1
+### ARGPARSER TEST ####
+#def get_args():
+arguments = len(sys.argv)
+if arguments != 6:
+    print("The number of argumentums should be 5.  batch_size, nb_epoch, do_load_model, do_save_model, do_finetune")
+    exit()
 
+
+
+    # MODEL_PATH, LAYER, NEURON_INDEX = sys.argv[1:]
+batch_size_arg, nb_epoch_arg, do_load_model_arg, do_save_model_arg, do_finetune_arg = sys.argv[1:]
+batch_size = int(batch_size_arg)
+nb_epoch = int(nb_epoch_arg)
+do_load_model = bool(int(do_load_model_arg))
+do_save_model = bool(int(do_save_model_arg))
+do_finetune = bool(int(do_finetune_arg))
+print(do_load_model_arg,do_load_model)
+    #return batch_size, nb_epoch, do_load_model, do_save_model
 
 def save(graph_file, ckpt_file, top_node, frozen_model_file):
     sess = K.get_session()
@@ -85,7 +100,7 @@ def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, t
 
     model = Model(inputs=base_model.input, outputs=predictions)
 
-    do_load_model = True
+    # do_load_model = True    DELETE IF EVERYTHING WORKS
     if do_load_model:
         model.load_weights('my_model_weights.h5')
 
@@ -118,7 +133,7 @@ def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, t
     model.fit_generator(train_flow, steps_per_epoch=train_samples_per_epoch//batch_size, nb_epoch=nb_epoch,
         validation_data=test_flow, validation_steps=test_samples_per_epoch//batch_size)
 
-    do_save_model = True
+    # do_save_model = True  DELETE IF EVERYTHING WORKS
     if do_save_model:
         model.save_weights('my_model_weights.h5')
 
@@ -158,6 +173,7 @@ def load_data():
     return train_flow, test_flow, tags, train_samples_per_epoch, test_samples_per_epoch
 
 def main():
+    #get_args()
     topology = "googlenet"
     if topology == "googlenet":
         net = InceptionV1(include_top=False, weights='imagenet', input_tensor=None, input_shape=(299, 299, 3), pooling=None)
@@ -175,7 +191,6 @@ def main():
         assert False, "unknown topology " + topology
 
 
-    do_finetune = True
     if do_finetune:
         train_flow, test_flow, tags, train_samples_per_epoch, test_samples_per_epoch = load_data()
         finetune(net, train_flow, test_flow, tags, train_samples_per_epoch, test_samples_per_epoch)
