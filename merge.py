@@ -5,10 +5,14 @@
 from PIL import Image
 import sys
 import os
+import argparse
 
-column_arg, = sys.argv[1:]
-print(column_arg)
-column = int(column_arg)
+parser = argparse.ArgumentParser()
+parser.add_argument("--column", help='number of neurons in each layer', type=int)
+
+FLAGS = parser.parse_args()
+
+column = FLAGS.column
 
 
 def merge():

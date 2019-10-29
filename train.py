@@ -25,27 +25,34 @@ from tensorflow.core.protobuf import saver_pb2
 import sys
 import dataset
 import freeze_graph
-
+import argparse
 import os
 
-### ARGPARSER TEST ####
-#def get_args():
-arguments = len(sys.argv)
-if arguments != 6:
-    print("The number of argumentums should be 5.  batch_size, nb_epoch, do_load_model, do_save_model, do_finetune")
-    exit()
+def str2bool(v):
+    if isinstance(v, bool):
+       return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--batch_size", help='batch size', type=int)
+parser.add_argument("--nb_epoch", help='number of epochs', type=int)
+parser.add_argument("--do_load_model", help='True or False', type=str2bool)
+parser.add_argument("--do_save_model", help='True or False', type=str2bool)
+parser.add_argument("--do_finetune", help='True or False', type=str2bool)
 
+FLAGS = parser.parse_args()
 
-    # MODEL_PATH, LAYER, NEURON_INDEX = sys.argv[1:]
-batch_size_arg, nb_epoch_arg, do_load_model_arg, do_save_model_arg, do_finetune_arg = sys.argv[1:]
-batch_size = int(batch_size_arg)
-nb_epoch = int(nb_epoch_arg)
-do_load_model = bool(int(do_load_model_arg))
-do_save_model = bool(int(do_save_model_arg))
-do_finetune = bool(int(do_finetune_arg))
-print(do_load_model_arg,do_load_model)
-    #return batch_size, nb_epoch, do_load_model, do_save_model
+do_load_model = FLAGS.do_load_model
+do_save_model = FLAGS.do_save_model
+do_finetune = FLAGS.do_finetune
+batch_size = FLAGS.batch_size
+nb_epoch = FLAGS.nb_epoch
+
 
 def save(graph_file, ckpt_file, top_node, frozen_model_file):
     sess = K.get_session()
@@ -100,8 +107,7 @@ def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, t
 
     model = Model(inputs=base_model.input, outputs=predictions)
 
-    # do_load_model = True    DELETE IF EVERYTHING WORKS
-    if do_load_model:
+    if do_load_model == True:
         model.load_weights('my_model_weights.h5')
 
     # let's visualize layer names and layer indices to see how many layers
@@ -133,7 +139,6 @@ def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, t
     model.fit_generator(train_flow, steps_per_epoch=train_samples_per_epoch//batch_size, nb_epoch=nb_epoch,
         validation_data=test_flow, validation_steps=test_samples_per_epoch//batch_size)
 
-    # do_save_model = True  DELETE IF EVERYTHING WORKS
     if do_save_model:
         model.save_weights('my_model_weights.h5')
 
@@ -173,7 +178,6 @@ def load_data():
     return train_flow, test_flow, tags, train_samples_per_epoch, test_samples_per_epoch
 
 def main():
-    #get_args()
     topology = "googlenet"
     if topology == "googlenet":
         net = InceptionV1(include_top=False, weights='imagenet', input_tensor=None, input_shape=(299, 299, 3), pooling=None)

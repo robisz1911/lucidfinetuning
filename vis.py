@@ -5,14 +5,25 @@ from lucid.modelzoo.vision_base import Model
 import lucid.optvis.render as render
 import lucid.optvis.objectives as objectives
 import lucid.optvis.param as param
-
+import argparse
 
 MODEL_PATH, LAYER, OUTPUT_PREFIX, COLUMNS_arg = sys.argv[1:]
 # 'inceptionLucid.pb', 'average_pooling2d_9/AvgPool'
 
+#parser = argparse.ArgumentParser()
+#parser.add_argument("--column", help='number of visualized neurons in each layer', type=int)
+#parser.add_argument("--MODEL_PATH", help='model path', type=str )
+#parser.add_argument("--LAYER", help= 'cat googlenet-node-name | grep layer')
+#parser.add_argument("--OUTPUT_PREFIX")
+
+#FLAGS = parser.parse_args()
+
+#MODEL_PATH = FLAGS.MODEL_PATH
+#LAYER = FLAGS.LAYER
+#OUTPUT_PREFIX = FLAGS.OUTPUT_PREFIX
+#COLUMNS = FLAGS.column
+
 COLUMNS = int(COLUMNS_arg)
-print(COLUMNS)
-#COLUMNS = 5
 
 class FrozenNetwork(Model):
     model_path = MODEL_PATH
