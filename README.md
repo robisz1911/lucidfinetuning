@@ -33,7 +33,7 @@ Also, this is where we can set the parameters, and objectives for the Lucid visu
 
 In order to visualize one certain state of the network, run the commands:
 ```
-cat googlenet-node-names | grep „expression” | python vis.py sample.pb – sample_visualization
+cat googlenet-node-names | grep „expression” | python vis.py sample.pb – sample_visualization COLUMNS
 ```
 `Googlenet-node-names` contains the layer names of the googlenet architecture, and grep
 command select all of theose layers which include *„expression”*. Then the visualization of the
