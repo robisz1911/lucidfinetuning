@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 import keras.backend as K
+import keras
 
 from keras.utils import to_categorical
 from keras.optimizers import SGD, Adam, RMSprop
@@ -27,6 +28,7 @@ import dataset
 import freeze_graph
 import argparse
 import os
+import matplotlib.pyplot as plt
 
 def str2bool(v):
     if isinstance(v, bool):
@@ -41,6 +43,8 @@ def str2bool(v):
 parser = argparse.ArgumentParser()
 parser.add_argument("--batch_size", help='batch size', type=int)
 parser.add_argument("--nb_epoch", help='number of epochs', type=int)
+parser.add_argument("--dataset", help='training dataset', type=str)
+parser.add_argument("--cutoff", help='freeze the first cutoff layers during training', type=int)
 parser.add_argument("--do_load_model", help='True or False', type=str2bool)
 parser.add_argument("--do_save_model", help='True or False', type=str2bool)
 parser.add_argument("--do_finetune", help='True or False', type=str2bool)
@@ -48,11 +52,14 @@ parser.add_argument("--save_layer_names_shapes", help='if yes : iterate over act
 
 FLAGS = parser.parse_args()
 
+batch_size = FLAGS.batch_size
+nb_epoch = FLAGS.nb_epoch
+data = FLAGS.dataset
+cutoff = FLAGS.cutoff
 do_load_model = FLAGS.do_load_model
 do_save_model = FLAGS.do_save_model
 do_finetune = FLAGS.do_finetune
-batch_size = FLAGS.batch_size
-nb_epoch = FLAGS.nb_epoch
+
 save_layer_names_shapes = FLAGS.save_layer_names_shapes
 
 
@@ -98,6 +105,17 @@ def save(graph_file, ckpt_file, top_node, frozen_model_file):
                  saved_model_tags,
                  checkpoint_version)
 
+# create callbacks for accuracy tracking
+class AccHistory(keras.callbacks.Callback):
+    def on_train_begin(self, logs={}):
+        self.valacc = []
+        self.acc = []
+
+    def on_epoch_end(self, epoch, logs={}):
+        self.valacc.append(logs.get('val_acc'))
+        self.acc.append(logs.get('acc'))
+
+
 def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, test_samples_per_epoch):
     nb_classes = len(tags)
     x = base_model.output
@@ -129,35 +147,30 @@ def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, t
 
     # we chose to train the top 2 inception blocks, i.e. we will freeze
     # the first 'cutoff' layers and unfreeze the rest. Francois used 249
-    cutoff = 20
+    
+    print(cutoff)
+    # cutoff = 20
     for layer in model.layers[:cutoff]:
         layer.trainable = False
     for layer in model.layers[cutoff:]:
         layer.trainable = True
 
     model.summary()
-    save_layer_names_shapes(model)
     
-
-
     if do_save_model:
         model.save_weights('my_model_weights.h5')
-def save_layer_names_shapes(model):
-    if save_layer_names_shapes:
-        text_file = open("layers_name_channel.txt", "w")
-            
-        for layer in model.layers:
-            #print(layer.name, layer.output_shape)
-            if "act" in layer.name:
-                text_file.write(str(layer.name)+" "+str(layer.get_output_at(0).get_shape().as_list()[3])+"\n")
-        text_file.close()
-        exit()
+
+    history=AccHistory()	
+
     model.compile(optimizer=Adam(lr=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
     model.fit_generator(train_flow, steps_per_epoch=train_samples_per_epoch//batch_size, nb_epoch=nb_epoch,
-        validation_data=test_flow, validation_steps=test_samples_per_epoch//batch_size)
+        validation_data=test_flow, validation_steps=test_samples_per_epoch//batch_size, callbacks=[history])
+    
+    print(history.acc)
+    print(history.valacc)
 
 def load_data():
-    X, y, tags = dataset.dataset('flowers17', 299)
+    X, y, tags = dataset.dataset(data, 299)
     print(tags)
 
     nb_classes = len(tags)
@@ -226,6 +239,17 @@ def main():
             graph_def.ParseFromString(f.read())
         for node in graph_def.node:
             print(node.name)
+
+    save_layer_names_shapes=False
+    if save_layer_names_shapes:
+        text_file = open("layers_name_channel_concat.txt", "w")
+
+        for layer in model.layers:
+            #print(layer.name, layer.output_shape)
+            if "Concat" in layer.name:
+                text_file.write(str(layer.name)+"/concat "+str(layer.get_output_at(0).get_shape().as_list()[3])+"\n")
+        text_file.close()
+        exit()
 
 
 if __name__ == "__main__":
