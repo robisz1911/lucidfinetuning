@@ -2,11 +2,11 @@
 
 # download necessary frozen model files
 # curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_flowers.pb
-# curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_finetuned.pb
-# curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_imagenet.pb
+curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_finetuned.pb
+curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_imagenet.pb
 # mv googlenet_imagenet.pb googlenet_default.pb
 
-input="layers_name_channel_relu.txt"
+input="layers_name_channel_concat.txt"
 
 while IFS= read -r line
 do
@@ -28,7 +28,7 @@ do
     for (( i=0; i<=n_neurons; i++ ))
     do
         echo $i
-        for weights in default #finetuned flowers
+        for weights in default finetuned #flowers
         do
             python vis_neuron.py --MODEL_PATH=googlenet_$weights.pb --LAYER=$layer --NEURON_INDEX=$i
 
@@ -38,6 +38,6 @@ do
 
     done
 
-    mv $dir_* $dir
+    mv $dir* $dir
 
 done < "$input"
