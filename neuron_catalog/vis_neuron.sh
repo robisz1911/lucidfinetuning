@@ -6,22 +6,30 @@ curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/singl
 curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_imagenet.pb
 mv googlenet_imagenet.pb googlenet_default.pb
 
+input="layers_name_channel.txt"
 
-layer=Mixed_4d_Concatenated/concat
-n_neurons=511
-
-# for number of neurons in layer
-for (( i=0; i<=n_neurons; i++ ))
+while IFS= read -r line
 do
-    for weights in default finetuned flowers
-    do
 
-        python vis_neuron.py googlenet_$weights.pb $layer $i
+    vars=( $line )
+    layer=${vars[0]}"/Relu"
+    n_neurons=1
+#    n_neurons=${vars[1]}-1
+
+    echo $layer
+    echo $n_neurons
+# for number of neurons in layer
+    for (( i=0; i<=n_neurons; i++ ))
+    do
+        echo $i
+        for weights in default finetuned flowers
+        do
+            python vis_neuron.py --MODEL_PATH=googlenet_$weights.pb --LAYER=$layer --NEURON_INDEX=$i
+
+        done
+
+        #python merge_neuron.py $layer $i
 
     done
 
-    python merge_neuron.py $layer $i
-
-done
-
-
+done < "$input"

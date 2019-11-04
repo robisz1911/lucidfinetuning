@@ -44,6 +44,7 @@ parser.add_argument("--nb_epoch", help='number of epochs', type=int)
 parser.add_argument("--do_load_model", help='True or False', type=str2bool)
 parser.add_argument("--do_save_model", help='True or False', type=str2bool)
 parser.add_argument("--do_finetune", help='True or False', type=str2bool)
+parser.add_argument("--save_layer_names_shapes", help='if yes : iterate over act layers and return name/shape', default=False, type=str2bool)
 
 FLAGS = parser.parse_args()
 
@@ -52,6 +53,7 @@ do_save_model = FLAGS.do_save_model
 do_finetune = FLAGS.do_finetune
 batch_size = FLAGS.batch_size
 nb_epoch = FLAGS.nb_epoch
+save_layer_names_shapes = FLAGS.save_layer_names_shapes
 
 
 def save(graph_file, ckpt_file, top_node, frozen_model_file):
@@ -134,13 +136,25 @@ def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, t
         layer.trainable = True
 
     model.summary()
+    save_layer_names_shapes(model)
+    
 
-    model.compile(optimizer=Adam(lr=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
-    model.fit_generator(train_flow, steps_per_epoch=train_samples_per_epoch//batch_size, nb_epoch=nb_epoch,
-        validation_data=test_flow, validation_steps=test_samples_per_epoch//batch_size)
 
     if do_save_model:
         model.save_weights('my_model_weights.h5')
+def save_layer_names_shapes(model):
+    if save_layer_names_shapes:
+        text_file = open("layers_name_channel.txt", "w")
+            
+        for layer in model.layers:
+            #print(layer.name, layer.output_shape)
+            if "act" in layer.name:
+                text_file.write(str(layer.name)+" "+str(layer.get_output_at(0).get_shape().as_list()[3])+"\n")
+        text_file.close()
+        exit()
+    model.compile(optimizer=Adam(lr=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
+    model.fit_generator(train_flow, steps_per_epoch=train_samples_per_epoch//batch_size, nb_epoch=nb_epoch,
+        validation_data=test_flow, validation_steps=test_samples_per_epoch//batch_size)
 
 def load_data():
     X, y, tags = dataset.dataset('flowers17', 299)
