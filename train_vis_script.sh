@@ -4,9 +4,9 @@
 
 # NOTE : SET THE PARAMETERS BELOW :
 
-folder_for_pictures=testing_vis_train_pic
-folder_for_trainings=testing_vis_train_pbs
-steps=5 # # train [(steps-1)*epoch_per_steps] epochs //because 1.pb will belong to the state before training(original imagenet weights) and visualize after each steps
+folder_for_pictures=xxxxxpics
+folder_for_trainings=xxxxpb
+steps=2 # # train [(steps-1)*epoch_per_steps] epochs //because 1.pb will belong to the state before training(original imagenet weights) and visualize after each steps
 batch_size=32
 epoch_per_steps=1
 columns=2                                      # the first $columns neurons 'll be visualized

@@ -4,10 +4,10 @@
 
 # NOTE : SET THESE PARAMETERS BELOW!
 
-foldername=flowers_0cutoff_200_epochs # save .pb files into this folder
-epoch_per_steps=1 
+foldername=lasttest # save .pb files into this folder
+epoch_per_steps=1
 batch_size=32
-steps=200 # train [(steps-1)*epoch_per_steps] epochs //because 1.pb will belong to the state before training(original imagenet weights)
+steps=2 # train [(steps-1)*epoch_per_steps] epochs //because 1.pb will belong to the state before training(original imagenet weights)
 dataset=flowers17
 cutoff=0
 

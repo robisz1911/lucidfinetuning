@@ -5,10 +5,10 @@
 
 # NOTE : SET THESE PARAMETERS BELOW:
 
-rows=5  #number of pb files
-columns=5  #number of neurons
-folder_for_pictures=aaa_pics                    # where you save the pictures
-folder_where_pb_files_are=aaa_pbs                              # from where you read .pb files
+rows=2  #number of pb files
+columns=1  #number of neurons
+folder_for_pictures=lasttest_pics                    # where you save the pictures
+folder_where_pb_files_are=lasttest                              # from where you read .pb files
 layer=Mixed_4c_Branch_3_b_1x1_act/Relu
 
 mkdir $folder_for_pictures

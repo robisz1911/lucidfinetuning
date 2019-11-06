@@ -38,7 +38,7 @@ param_f = lambda: param.image(pixels, fft=True, decorrelate=True)
 #obj_test = objectives.channel(LAYER, NEURON_INDEX).get_shape()
 #print(obj_test)
 obj = objectives.channel(LAYER, NEURON_INDEX)
-images = render.render_vis(network, obj, param_f, thresholds=(2048,))
+images = render.render_vis(network, obj, param_f, thresholds=(1024,))
 assert len(images)==1
 image = images[0]
 assert len(image)==1
