@@ -4,7 +4,7 @@
 # curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_flowers.pb
 curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_finetuned.pb
 curl -OL https://raw.githubusercontent.com/robisz1911/LUCID_RESULTS/master/single_results/deepdream/googlenet_imagenet.pb
-# mv googlenet_imagenet.pb googlenet_default.pb
+mv googlenet_imagenet.pb googlenet_default.pb
 
 input="layers_name_channel_concat.txt"
 
@@ -13,15 +13,17 @@ do
 
     vars=( $line )
     layer=${vars[0]}
-    n_neurons=1
-
-#    n_neurons=${vars[1]}-1
+    n_neurons=${vars[1]}-1
 
     echo $layer
     echo $n_neurons
 
     dir=${layer////-}
-    mkdir $dir
+
+    if [ ! -d "$dir" ]
+    then
+        mkdir $dir
+    fi
 
 
 # for number of neurons in layer
@@ -38,6 +40,6 @@ do
 
     done
 
-    mv $dir* $dir
+    mv ${dir}_* $dir
 
 done < "$input"
