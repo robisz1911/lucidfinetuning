@@ -11,20 +11,20 @@ Used frozen model files (downloaded automatically by the script)
   - googlenet_finetuned.pb (after Imagenet -> flowers transfer learning)
   (- googlenet_flowers.pb (training on flowers) )
   
-  Use of arbitrary frozen model file (e.g animals):
+  Use arbitrary frozen model file (e.g animals):
   - Copy googlenet_animals.pb file to working directory
   - Add animals to line 33: 
     ```
     for weights in default finetuned animals
     ```
   
-Saved to */layer/layer\_neuron id\_frozen model file.png*
+#### Saved to *neuron_catalog/layer/layer\_neuron id\_frozen model file.png*
   - e.g Mixed_3c_Concatenated-concat/Mixed_3c_Concatenated-concat_1_googlenet_finetuned.pb.png
   
 ### All visualizations of a neuron on one image
 ![alt text](https://github.com/robisz1911/LUCID_RESULTS/blob/master/neuron_catalog/Mixed4d_concat/Mixed4d_concat_merged/Mixed_4d_Concatenated-concat_179.png)
 
-Saved to */layer/layer_merged/layer\_neuron id.png*
+#### Saved to *neuron_catalog/layer/layer_merged/layer\_neuron id.png*
   - e.g Mixed_3c_Concatenated-concat/Mixed_3c_Concatenated-concat_merged/Mixed_3c_Concatenated-concat_2.png
 
 
