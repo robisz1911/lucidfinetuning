@@ -129,11 +129,12 @@ def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, t
 
     if do_load_model == True:
         model.load_weights('my_model_weights.h5')
+        print("weights loaded")
 
     # let's visualize layer names and layer indices to see how many layers
     # we should freeze:
-    for i, layer in enumerate(base_model.layers):
-        print(i, layer.name)
+    #for i, layer in enumerate(base_model.layers):
+    #    print(i, layer.name)
 
     # first: train only the top layers (which were randomly initialized)
     # i.e. freeze all convolutional InceptionV3 layers
@@ -157,15 +158,17 @@ def finetune(base_model, train_flow, test_flow, tags, train_samples_per_epoch, t
 
     model.summary()
     
-    if do_save_model:
-        model.save_weights('my_model_weights.h5')
-
     history=AccHistory()	
 
     model.compile(optimizer=Adam(lr=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
     model.fit_generator(train_flow, steps_per_epoch=train_samples_per_epoch//batch_size, nb_epoch=nb_epoch,
         validation_data=test_flow, validation_steps=test_samples_per_epoch//batch_size, callbacks=[history])
     
+    if do_save_model:
+        model.save_weights('my_model_weights.h5')
+        print("weights saved")
+
+
     print(history.acc)
     print(history.valacc)
 
@@ -207,7 +210,7 @@ def load_data():
 def main():
     topology = "googlenet"
     if topology == "googlenet":
-        net = InceptionV1(include_top=False, weights='imagenet', input_tensor=None, input_shape=(299, 299, 3), pooling=None)
+        net = InceptionV1(include_top=False, weights=None, input_tensor=None, input_shape=(299, 299, 3), pooling=None)
         top_node = "Mixed_5c_Concatenated/concat"
         frozen_model_file = "googlenetLucid.pb"
     elif topology == "inception_v3":
