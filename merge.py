@@ -23,9 +23,7 @@ def merge():
         if filename.endswith(".png"):
             x = filename.zfill(40)
             os.rename(filename,x)
-            number_of_pictures += 1
-    print("-----------------------------------------------------")
-    print(number_of_pictures)        
+            number_of_pictures += 1     
     height = 128
     #column = 5 # must be the same as COLUMN in vis.py ( the number of neurons we wanna to visualize )
 #    column_arg = sys.argv[1:]
