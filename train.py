@@ -49,6 +49,7 @@ parser.add_argument("--do_load_model", help='True or False', type=str2bool)
 parser.add_argument("--do_save_model", help='True or False', type=str2bool)
 parser.add_argument("--do_finetune", help='True or False', type=str2bool)
 parser.add_argument("--save_layer_names_shapes", help='if yes : iterate over act layers and return name/shape', default=False, type=str2bool)
+parser.add_argument("--weights", help='default -> imagenet weights, None -> random initialized', default='imagenet')
 
 FLAGS = parser.parse_args()
 
@@ -59,6 +60,10 @@ cutoff = FLAGS.cutoff
 do_load_model = FLAGS.do_load_model
 do_save_model = FLAGS.do_save_model
 do_finetune = FLAGS.do_finetune
+weights = FLAGS.weights
+if weights=="None":
+    weights=None
+
 
 save_layer_names_shapes = FLAGS.save_layer_names_shapes
 
@@ -210,15 +215,15 @@ def load_data():
 def main():
     topology = "googlenet"
     if topology == "googlenet":
-        net = InceptionV1(include_top=False, weights='imagenet', input_tensor=None, input_shape=(299, 299, 3), pooling=None)
+        net = InceptionV1(include_top=False, weights=weights, input_tensor=None, input_shape=(299, 299, 3), pooling=None)
         top_node = "Mixed_5c_Concatenated/concat"
         frozen_model_file = "googlenetLucid.pb"
     elif topology == "inception_v3":
-        net = InceptionV3(include_top=False, weights='imagenet', input_tensor=None, input_shape=(299, 299, 3), pooling=None)
+        net = InceptionV3(include_top=False, weights=weights, input_tensor=None, input_shape=(299, 299, 3), pooling=None)
         top_node = "mixed10/concat"
         frozen_model_file = "inceptionv3Lucid.pb"
     elif topology == "vgg16":
-        net = VGG16(include_top=False, weights='imagenet', input_tensor=None, input_shape=(299, 299, 3), pooling=None)
+        net = VGG16(include_top=False, weights=weights, input_tensor=None, input_shape=(299, 299, 3), pooling=None)
         top_node = "block5_pool/MaxPool"
         frozen_model_file = "vgg16Lucid.pb"
     else:
