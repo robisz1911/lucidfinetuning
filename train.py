@@ -210,7 +210,7 @@ def load_data():
 def main():
     topology = "googlenet"
     if topology == "googlenet":
-        net = InceptionV1(include_top=False, weights=None, input_tensor=None, input_shape=(299, 299, 3), pooling=None)
+        net = InceptionV1(include_top=False, weights='imagenet', input_tensor=None, input_shape=(299, 299, 3), pooling=None)
         top_node = "Mixed_5c_Concatenated/concat"
         frozen_model_file = "googlenetLucid.pb"
     elif topology == "inception_v3":
