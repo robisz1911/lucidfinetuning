@@ -50,6 +50,8 @@ parser.add_argument("--do_save_model", help='True or False', default=False, type
 parser.add_argument("--do_finetune", help='True or False',default=True, type=str2bool)
 parser.add_argument("--save_layer_names_shapes", help='if yes : iterate over act layers and return name/shape', default=False, type=str2bool)
 parser.add_argument("--weights", help='default -> imagenet weights, None -> random initialized', default='imagenet')
+parser.add_argument("--top_node", help='top layer to visualize', default=Mixed_5c_Concatenated/concat, type=str)
+
 
 FLAGS = parser.parse_args()
 
@@ -61,6 +63,8 @@ do_load_model = FLAGS.do_load_model
 do_save_model = FLAGS.do_save_model
 do_finetune = FLAGS.do_finetune
 weights = FLAGS.weights
+top_node = FLAGS.top_node
+
 if weights=="None":
     weights=None
 
@@ -216,7 +220,7 @@ def main():
     topology = "googlenet"
     if topology == "googlenet":
         net = InceptionV1(include_top=False, weights=weights, input_tensor=None, input_shape=(299, 299, 3), pooling=None)
-        top_node = "Mixed_5c_Concatenated/concat"
+        top_node = top_node
         frozen_model_file = "googlenetLucid.pb"
     elif topology == "inception_v3":
         net = InceptionV3(include_top=False, weights=weights, input_tensor=None, input_shape=(299, 299, 3), pooling=None)
