@@ -13,7 +13,7 @@ cutoff=0
 
 if [ $dataset == celeba ]
 then
-    trainer=train_celeba_final.py
+    trainer=train_celeba.py
 else
     trainer=train.py
 fi
