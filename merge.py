@@ -24,12 +24,12 @@ def merge():
             x = filename.zfill(40)
             os.rename(filename,x)
             number_of_pictures += 1     
-    height = 128
+    height = 144
     #column = 5 # must be the same as COLUMN in vis.py ( the number of neurons we wanna to visualize )
 #    column_arg = sys.argv[1:]
 #    print(column_arg)
 #    column = int(column_arg)
-    width = 128*column
+    width = 144*column
     merged = Image.new('RGB', (width, height*number_of_pictures))
     iterator = 0
     for filename in sorted(os.listdir()):

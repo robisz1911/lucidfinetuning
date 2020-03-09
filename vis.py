@@ -27,7 +27,7 @@ COLUMNS = int(COLUMNS_arg)
 
 class FrozenNetwork(Model):
     model_path = MODEL_PATH
-    image_shape = [299, 299, 3]
+    image_shape = [144, 144, 3]
     image_value_range = (0, 1)
     input_name = 'input_1'
 
