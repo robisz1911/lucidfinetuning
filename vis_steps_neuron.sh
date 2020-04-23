@@ -41,7 +41,7 @@ do
             python vis_neuron.py --MODEL_PATH=$i.pb --LAYER=$layer --NEURON_INDEX=$neuron_index
         done
 
-        for (( i = 250; i <= 20; i+=50 ))
+        for (( i = 250; i <= 600; i+=50 ))
         do
             python vis_neuron.py --MODEL_PATH=$i.pb --LAYER=$layer --NEURON_INDEX=$neuron_index
         done
