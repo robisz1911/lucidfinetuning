@@ -60,6 +60,22 @@ def image_list_to_npy(filenames, output):
 
 
 def main_convert():
+    # corpus = "celeba" ; kind = "finetuned"
+    corpus, kind, output = sys.argv[1:]
+
+    filenames = []
+    for l in sys.stdin:
+        batch, layer, size = l.strip().split()
+        size = int(size)
+        for indx in range(size):
+            filename = "%s_%s/%s/%s_%d_googlenet_%s.pb.png" % (corpus, batch, layer, layer, indx, kind)
+            filenames.append(filename)
+    print("\n".join(filenames))
+    image_list_to_npy(filenames, output)
+
+
+def main_convert_old():
+    raise Exception("not safe, use main_convert() instead")
     filenames = [l.strip() for l in sys.stdin]
     parseds = [filename.split("/")[-1].split("_") for filename in filenames]
     parseds = [(parsed[:7], int(parsed[7]), filename) for (filename, parsed) in zip(filenames, parseds)]
@@ -69,17 +85,23 @@ def main_convert():
     output = sys.argv[1]
     image_list_to_npy(filenames_sorted, output)
 
+
 # main_convert() ; sys.exit()
 
 
-image_file = 'lucid-celeba-256.npy'
-image_file = 'lucid-default-imagenet-256.npy'
+image_file = 'lucid-celeba-full-256.npy'
+# image_file = 'lucid-default-imagenet-full-256.npy'
 print("loading", image_file)
 image_list = np.load(image_file)
-image_list = image_list[-128:] ; print("truncating image set to last 128")
+
+# image_list = image_list[-128:] ; print("truncating image set to last 128")
+image_list = image_list[:1280] ; print("truncating image set to first 1280")
+
+
 image_list = image_list[:, :224, :224, :] ; print("truncating image sizes to 224x224")
 
 
+# which_network = "celeba"
 which_network = "imagenet"
 print("using", which_network, "weigths")
 if which_network == "imagenet":
@@ -107,7 +129,7 @@ tensors = list_tensors(sess.graph)
 image_counter = 0
 mx = np.random.rand(0,0)
 batch_size = 128
-batch_count = 1
+batch_count = 10 # 57
 print('Computing results for ' + str(batch_size * batch_count) + ' images')
 print('Batch size: ' + str(batch_size))
 for image_counter in range(batch_count):
@@ -123,9 +145,6 @@ for image_counter in range(batch_count):
   image_line = np.random.rand(batch_size, 0)
   #print(len(preds))
   for pred in preds: # For each layer
-    # Max pooling a single prediction
-    #print(pred.shape)
-    #print(pred)
     maxed = max_pool(pred)
     #print(maxed)
     image_line = np.hstack((image_line, maxed))
@@ -136,6 +155,29 @@ for image_counter in range(batch_count):
   else:
     mx = np.vstack((mx,image_line))
 
+'''
 print("Saving matrix...")
 savez_compressed('mx-ours.npz', mx)
 print(mx.shape)
+'''
+
+mx_top = mx.T[:1280, :]
+print(mx_top.shape)
+
+mx_top -= mx_top.mean(axis=1, keepdims=True)
+
+print(np.mean(mx_top.diagonal()))
+for i in range(10):
+  s = mx_top.copy()
+  np.random.shuffle(s)
+  print(np.mean(s.diagonal()))
+
+print(np.mean(s))
+
+
+
+vis = True
+if vis:
+    import matplotlib.pyplot as plt
+    plt.imshow(mx_top, cmap='hot', interpolation='nearest')
+    plt.show()
